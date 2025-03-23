@@ -51,3 +51,21 @@ The information we have focused on analysing is the altitude given by different 
 
 
 ## 2. PHASE 2
+
+During the second phase of the transversal project applications for drones have been studied. It was time to decide which project we wanted to do. We decided to join different skills learnt during all the Master's degree subjects. The project we thought was a servo-gimbal capable of following a drone and computing its distance to the gimbal/coordinates. With this project we would applied Unmanned Aircraft skills when programming the servo-motors that move the gimbal; Payload ones to train a model and detect the drone through images; and System Integration in UAS when sending video, commands and more between different systems in our project. Then, we had to search and apply different parts teached during the phase 2 guide. From the document, we thought the following chapters were interesting for the project.
+
+### [2.1 Activity 1: Raspberry Pi Basic Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+One of the main things was using a Raspberry Pi as a computer for receiving and sending video, giving commands to the servos and, if possible, computing and analyzing the video in order to detect the drone. Then, it was necessary to configure a Raspberry Pi and a local network. This chapter guided us through this process.
+
+### [2.2 Activity 2: Controlling the button and LEDs Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+If we wanted to use the Raspberry Pi (from now on RPi) to control the servos, it was necessary to use its GPIO. Therefore, we thought it was interesting to do this part of the tutorial in order to get familiarized with the RPi GPIO.
+
+### [2.3 Activity 3: Installing and using the camera and the OpenCV library Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+The main part of the project was capturing video and process it. Then, a camera connected to the RPi was necessary. A part from that, we should be able to process the video. Then, this tutorial gave us all the steps to do so. However, as explained in the attached document, we had some troubleshoot when detecting the camera in the RPi which made us take different paths than the ones explained in the tutorial. In this part we added some knowledge given by the teachers from [DronsEETAC comunity](https://github.com/dronsEETAC/CameraLink/tree/main/webSocketDemo). It was necessary to send video from the RPi to another computed. The protocol we decided to use was websockets, as it was the one giving lower latency compared with MQTT (The protocol studied during the lessons).
+
+### [2.4 Activity 4: Color based object detection](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+We needed to detect the drone. We knew, color-based detection was not going to give us the best results. However, we thought it was interesting, and also to familiarize with OpenCV, to do this tutorial.
+
+### [2.5 Activity 5: My little ground station](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+A clear idea we had was that we wanted to show everything in a simple ground station. The video should be shown and the gimbal controlled from this ground station. As in this chapter tkinter is used to do the ground station, it was necessary to go through the tutorials in order to know better how to do the ground station. Finally, custom-tkinter, which gives better designs, was the library used.
+

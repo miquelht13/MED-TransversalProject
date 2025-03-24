@@ -23,11 +23,11 @@ CAR_HEIGHT = 5.5  # Height
 CAR_ASPECT_RATIO = CAR_LENGTH / CAR_WIDTH  # Aspect ratio
 
 # Camera params
-SENSOR_WIDTH = 3.68  # mm / cm / m
-SENSOR_HEIGHT = 2.76  # mm / cm / m
+SENSOR_WIDTH = 3.68  # mm 
+SENSOR_HEIGHT = 2.76  # mm 
 PIXEL_WIDTH = 1280 # Must match with OpenCV config 
 PIXEL_HEIGHT = 720
-FOCAL_LENGTH = 3.04  # mm / cm / m
+FOCAL_LENGTH = 3.04  # mm 
 
 # Function to estimate the distance to the object
 def estimate_distance(bbox_width, bbox_height):
@@ -43,7 +43,7 @@ def estimate_distance(bbox_width, bbox_height):
     distance_x = (CAR_WIDTH * FOCAL_LENGTH) / object_width_mm
     distance_y = (CAR_HEIGHT * FOCAL_LENGTH) / object_height_mm
 
-    return (distance_x + distance_y) / 2  # Average distance
+    return (distance_x + distance_y) / 2  # Average distance in mm
 
 
 # Function to adjust the bbox by keeping the apect ratio 

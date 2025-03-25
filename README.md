@@ -57,10 +57,10 @@ During the second phase of the transversal project applications for drones have 
 ### [2.1 Activity 1: Raspberry Pi Basic Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7310242942353391617)
 One of the main things was using a Raspberry Pi as a computer for receiving and sending video, giving commands to the servos and, if possible, computing and analyzing the video in order to detect the drone. Then, it was necessary to configure a Raspberry Pi and a local network. This chapter guided us through this process.
 
-### [2.2 Activity 2: Controlling the button and LEDs Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+### [2.2 Activity 2: Controlling the button and LEDs Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7310274140102393857)
 If we wanted to use the Raspberry Pi (from now on RPi) to control the servos, it was necessary to use its GPIO. Therefore, we thought it was interesting to do this part of the tutorial in order to get familiarized with the RPi GPIO.
 
-### [2.3 Activity 3: Installing and using the camera and the OpenCV library Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+### [2.3 Activity 3: Installing and using the camera and the OpenCV library Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7310274676176384000)
 The main part of the project was capturing video and process it. Then, a camera connected to the RPi was necessary. A part from that, we should be able to process the video. Then, this tutorial gave us all the steps to do so. However, as explained in the attached document, we had some troubleshoot when detecting the camera in the RPi which made us take different paths than the ones explained in the tutorial. 
 Moreover, in this part we added some knowledge given by the teachers from [DronsEETAC comunity](https://github.com/dronsEETAC/CameraLink/tree/main/webSocketDemo). It was necessary to send video from the RPi to another computer. The protocol we decided to use was websockets, as it was the one giving lower latency compared with MQTT (The protocol studied during the lessons).
 

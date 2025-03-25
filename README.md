@@ -54,7 +54,7 @@ The information we have focused on analysing is the altitude given by different 
 
 During the second phase of the transversal project applications for drones have been studied. It was time to decide which project we wanted to do. We decided to join different skills learnt during all the Master's degree subjects. The project we thought was a servo-gimbal capable of following a drone and computing its distance to the gimbal/coordinates. With this project we would applied Unmanned Aircraft skills when programming the servo-motors that move the gimbal; Payload ones to train a model and detect the drone through images; and System Integration in UAS when sending video, commands and more between different systems in our project. Then, we had to search and apply different parts teached during the phase 2 guide. From the document, we thought the following chapters were interesting for the project.
 
-### [2.1 Activity 1: Raspberry Pi Basic Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+### [2.1 Activity 1: Raspberry Pi Basic Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7310242942353391617)
 One of the main things was using a Raspberry Pi as a computer for receiving and sending video, giving commands to the servos and, if possible, computing and analyzing the video in order to detect the drone. Then, it was necessary to configure a Raspberry Pi and a local network. This chapter guided us through this process.
 
 ### [2.2 Activity 2: Controlling the button and LEDs Configuration](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)

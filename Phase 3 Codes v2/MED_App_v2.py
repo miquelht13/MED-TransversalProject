@@ -1,4 +1,6 @@
 import asyncio
+import time
+
 import websockets
 import base64
 import numpy as np
@@ -14,7 +16,7 @@ ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
 # Load the YOLO11 model
-model = YOLO("drone_m.pt")
+model = YOLO("drone_s.pt")
 frame_width = 0
 frame_height = 0
 center_x, center_y = 0, 0
@@ -30,8 +32,8 @@ PIXEL_WIDTH = 1920 #Debe cuadrar con la resolución del frame de OpenCV
 PIXEL_HEIGHT = 1080
 FOCAL_LENGTH = 3.04  # mm
 
-lat0, lon0 = 41.276254, 1.988224 #DroneLab facilities
-bearing0, yaw, pitch = 40, 1500, 1850 
+lat0, lon0 = 41.276254, 1.988224
+bearing0, yaw, pitch = 40, 1500, 1850
 altitude0 = 1
 
 # Earth's radius in meters
@@ -43,7 +45,7 @@ def calculate_new_position(lat0d, lon0d, bearing0d, yawp, pitchp, distance, alti
     lat0 = math.radians(lat0d)
     lon0 = math.radians(lon0d)
     bearing0 = math.radians(bearing0d)
-    yawd = 0 * 180/2000
+    yawd = 0 * 180/2000 # Añadir estado neutro de los servos y calcular la regla de 3 de steps-grados del servo
     pitchd = 0 * 180 / 2000
     yaw = math.radians(yawd)
     pitch = math.radians(pitchd)
@@ -146,7 +148,7 @@ class VideoClient(ctk.CTk):
         self.left_button = ctk.CTkButton(self, text="Left", command=lambda: self.send_command("left"))
         self.left_button.grid(row=2, column=4, sticky="nsew", padx=5, pady=5)
 
-        self.track_button = ctk.CTkButton(self, text="Track/Untrack", command=lambda: self.send_command("track"))
+        self.track_button = ctk.CTkButton(self, text="Track", command=self.toggle_tracking)
         self.track_button.grid(row=2, column=5, sticky="nsew", padx=5, pady=5)
 
         self.right_button = ctk.CTkButton(self, text="Right", command=lambda: self.send_command("right"))
@@ -168,12 +170,13 @@ class VideoClient(ctk.CTk):
         self.map_widget.set_zoom(10)
         self.map_widget.grid(row=4, column=0, rowspan=2, columnspan=6, sticky="nsew")
         self.map_widget.add_right_click_menu_command(label="Add Gimbal Position",
-                                        command=self.set_gimbal_position,
-                                        pass_coords=True)
+                                                     command=self.set_gimbal_position,
+                                                     pass_coords=True)
 
-        self.running = False
+        self.running, self.tracking = False, False
         self.frame, self.detections, self.results, self.running_ia = None, None, None, True
-        self.object_marker = None
+        self.object_marker, self.gimbal_marker = None, None
+        self.drone_center_x, self.drone_center_y = 0, 0
 
         self.video_loop = asyncio.new_event_loop()
         self.command_loop = asyncio.new_event_loop()
@@ -184,17 +187,48 @@ class VideoClient(ctk.CTk):
         threading.Thread(target=self.yolo_detection).start()
 
     def yolo_detection(self):
+        global center_y, center_x
         while self.running_ia:
             if self.frame is not None:
                 self.results = model(self.frame)
                 self.detections = self.results[0]
+                if self.detections:
+                    if self.tracking:
+                        # Mover los servos para centrar el dron
+                        if self.drone_center_x < center_x - 30:  # Mover derecha
+                            self.send_command("left")
+                        elif self.drone_center_x > center_x + 30:
+                            self.send_command("right")
+
+                        if self.drone_center_y < center_y - 30:  # Mover arriba
+                            self.send_command("up")
+                        elif self.drone_center_y > center_y + 30:
+                            self.send_command("down")
+
+    def toggle_tracking(self):
+        if not self.tracking:
+            # Start tracking
+            self.start_tracking()
+            self.track_button.configure(text="Untrack")
+        else:
+            # Stop tracking
+            self.stop_tracking()
+            self.track_button.configure(text="Track")
+
+    def start_tracking(self):
+        self.tracking = True
+
+    def stop_tracking(self):
+        self.tracking = False
 
     def start_stream(self):
+        global center_x, center_y
         self.running = True
         self.start_button.configure(state="disabled")
         self.stop_button.configure(state="normal")
         self.running_ia = True
         threading.Thread(target=self.run_video_event_loop).start()
+        self.drone_center_x, self.drone_center_y = center_x, center_y
 
     def stop_stream(self):
         self.running = False
@@ -249,6 +283,8 @@ class VideoClient(ctk.CTk):
             # Create a new marker
             self.object_marker = self.map_widget.set_marker(lat, lon, text="Drone", marker_color_circle="red",
                                                             marker_color_outside="white")
+            self.map_widget.set_position(lat, lon)
+            self.map_widget.set_zoom(18)
 
         # Update the distance and height labels
         self.distance_label.configure(text=f"Drone at {distance:.2f} meters from sensor")
@@ -275,7 +311,7 @@ class VideoClient(ctk.CTk):
 
             # Ajustar bounding box para mantener la relación de aspecto fija
             x1, y1, x2, y2 = adjust_bbox(x1, y1, x2, y2)
-            drone_center_x, drone_center_y = (x1 + x2) // 2, (y1 + y2) // 2
+            self.drone_center_x, self.drone_center_y = (x1 + x2) // 2, (y1 + y2) // 2
 
             # Calcular la distancia estimada
             bbox_width = x2 - x1
@@ -291,18 +327,7 @@ class VideoClient(ctk.CTk):
             # Dibujar la caja delimitadora
             # f = results[0].plot()
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.circle(frame, (drone_center_x, drone_center_y), 5, (0, 0, 255), -1)
-
-            # Mover los servos para centrar el coche
-            if drone_center_x < center_x - 30: # Mover derecha
-                self.send_command("left")
-            elif drone_center_x > center_x + 30:
-                self.send_command("right")
-
-            if drone_center_y < center_y - 30: # Mover arriba
-                self.send_command("up")
-            elif drone_center_y > center_y + 30:
-                self.send_command("down")
+            cv2.circle(frame, (self.drone_center_x, self.drone_center_y), 5, (0, 0, 255), -1)
 
         img = Image.fromarray(frame)
         #img = img.resize((800, 500))
@@ -312,7 +337,6 @@ class VideoClient(ctk.CTk):
         self.video_label.image = img_ctk
 
     def send_command(self, command):
-        print("Sending command:", command)
         if self.command_websocket:
             asyncio.run_coroutine_threadsafe(self.command_websocket.send(command), self.command_loop)
 
@@ -327,7 +351,6 @@ class VideoClient(ctk.CTk):
                                                         marker_color_outside="white")
 
         lat0, lon0 = coords[0], coords[1]
-
 
 if __name__ == "__main__":
     app = VideoClient()

@@ -167,6 +167,9 @@ class VideoClient(ctk.CTk):
         self.map_widget.set_position(41.390205, 2.154007)
         self.map_widget.set_zoom(10)
         self.map_widget.grid(row=4, column=0, rowspan=2, columnspan=6, sticky="nsew")
+        self.map_widget.add_right_click_menu_command(label="Add Gimbal Position",
+                                        command=self.set_gimbal_position,
+                                        pass_coords=True)
 
         self.running = False
         self.frame, self.detections, self.results, self.running_ia = None, None, None, True
@@ -309,8 +312,22 @@ class VideoClient(ctk.CTk):
         self.video_label.image = img_ctk
 
     def send_command(self, command):
+        print("Sending command:", command)
         if self.command_websocket:
             asyncio.run_coroutine_threadsafe(self.command_websocket.send(command), self.command_loop)
+
+    def set_gimbal_position(self, coords):
+        global lat0, lon0
+        print("Setting gimbal position to:", coords)
+
+        if hasattr(self, 'gimbal_marker') and self.gimbal_marker:
+            self.gimbal_marker.delete()
+
+        self.gimbal_marker = self.map_widget.set_marker(coords[0], coords[1], text="Gimbal", marker_color_circle="blue",
+                                                        marker_color_outside="white")
+
+        lat0, lon0 = coords[0], coords[1]
+
 
 if __name__ == "__main__":
     app = VideoClient()

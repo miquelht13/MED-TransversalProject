@@ -65,7 +65,7 @@ The main part of the project was capturing video and process it. Then, a camera 
 Moreover, in this part we added some knowledge given by the teachers from [DronsEETAC comunity](https://github.com/dronsEETAC/CameraLink/tree/main/webSocketDemo). It was necessary to send video from the RPi to another computer. The protocol we decided to use was websockets, as it was the one giving lower latency compared with MQTT (The protocol studied during the lessons).
 
 ### [2.4 Activity 4: Color based object detection](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
-We needed to detect the drone. We knew, color-based detection was not going to give us the best results. However, we thought it was interesting, and also to familiarize with OpenCV, to do this tutorial.
+We needed to detect the drone. We knew, color-based detection was not going to give us the best results. However, we thought it was interesting, and also to familiarize with OpenCV, to do this tutorial. Also, some code was done to test the different options regarding masks and color detections.
 
 ### [2.5 Activity 5: My little ground station](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
 A clear idea we had was that we wanted to show everything in a simple ground station. The video should be shown and the gimbal controlled from this ground station. As in this chapter tkinter is used to do the ground station, it was necessary to go through the tutorials in order to know better how to do the ground station. As part of getting used to it, a couple of pyhton codes were done to simulate a basic station in order to control a drone simulated through Mission Planner via MQTT (but as commented in point 2.3, we finally chose to proceed with websockets).

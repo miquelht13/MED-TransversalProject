@@ -186,6 +186,19 @@ class VideoClient(ctk.CTk):
         self.object_marker, self.gimbal_marker = None, None
         self.drone_center_x, self.drone_center_y = 0, 0
 
+        # Inicializar el filtro de Kalman para suavizar el tracking [x, y, vx, vy]
+        self.kalman = cv2.KalmanFilter(4, 2)
+        self.kalman.measurementMatrix = np.array([[1, 0, 0, 0],
+                                                  [0, 1, 0, 0]], np.float32)
+        self.kalman.transitionMatrix = np.array([[1, 0, 1, 0],
+                                                 [0, 1, 0, 1],
+                                                 [0, 0, 1, 0],
+                                                 [0, 0, 0, 1]], np.float32)
+        self.kalman.processNoiseCov = np.eye(4, dtype=np.float32) * 0.03
+        self.kalman.measurementNoiseCov = np.eye(2, dtype=np.float32) * 0.5
+        self.kalman.errorCovPost = np.eye(4, dtype=np.float32)
+        self.kalman_initialized = False
+
         self.video_loop = asyncio.new_event_loop()
         self.command_loop = asyncio.new_event_loop()
 

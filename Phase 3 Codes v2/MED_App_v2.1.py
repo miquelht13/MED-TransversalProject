@@ -11,15 +11,23 @@ import threading
 import tkintermapview
 from ultralytics import YOLO
 import math
+import torch
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-# Load the YOLO11 model
-model = YOLO("drone_s.pt")
+# Configuración de YOLO con optimización
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+model = YOLO("drone_s.pt").to(device)
+if torch.cuda.is_available():
+    model = torch.compile(model)  # Optimizar el modelo si se usa GPU
+
 frame_width = 0
 frame_height = 0
 center_x, center_y = 0, 0
+frame_skip = 5  # Procesar cada 5 cuadros para mejorar la velocidad
+frame_count = 0
+
 # Datos del drone (medidas en mm)
 DRONE_LENGTH = 250  # Longitud
 DRONE_WIDTH = 250   # Ancho
@@ -269,78 +277,81 @@ class VideoClient(ctk.CTk):
         self.height_label.configure(text=f"Drone at {height:.2f} meters height")
 
     def update_image(self, frame):
-        global frame_width, frame_height, center_y, center_x, lat0, lon0, bearing0, yaw, pitch, altitude0
-
+        global frame_width, frame_height, center_y, center_x, lat0, lon0, bearing0, yaw, pitch, altitude0, frame_count
+        
         # Convertir el frame a RGB y establecer dimensiones fijas
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_width = 640
-        frame_height = 480
+        frame_width = 1920
+        frame_height = 1080
         center_x, center_y = frame_width // 2, frame_height // 2
         
-        # Ejecutar detección con YOLO directamente en el frame recibido
-        results = model(frame)
-        if results and results[0].boxes:
-            best_box = None
-            best_area = 0
-            # Seleccionar el objeto de mayor área con confianza > 0.8
-            for box in results[0].boxes:
-                conf = float(box.conf)
-                if conf < 0.8:
-                    continue
-                x1, y1, x2, y2 = map(int, box.xyxy[0])
-                area = (x2 - x1) * (y2 - y1)
-                if area > best_area:
-                    best_area = area
-                    best_box = (x1, y1, x2, y2)
-            if best_box:
-                x1, y1, x2, y2 = adjust_bbox(*best_box)
-                # Calcular el centro detectado actual
-                detected_center_x = (x1 + x2) // 2
-                detected_center_y = (y1 + y2) // 2
-        
-                # Preparar la medición para el filtro de Kalman
-                measurement = np.array([[np.float32(detected_center_x)],
-                                        [np.float32(detected_center_y)]])
-                # Inicializar el estado del filtro si es la primera medición
-                if not self.kalman_initialized:
-                    self.kalman.statePre = np.array([[np.float32(detected_center_x)],
-                                                     [np.float32(detected_center_y)],
-                                                     [0],
-                                                     [0]], np.float32)
-                    self.kalman_initialized = True
-        
-                # Predicción y corrección del filtro de Kalman
-                prediction = self.kalman.predict()
-                corrected = self.kalman.correct(measurement)
-                self.drone_center_x, self.drone_center_y = int(corrected[0]), int(corrected[1])
-        
-                bbox_width = x2 - x1
-                bbox_height = y2 - y1
-                distance = estimate_distance(bbox_width, bbox_height)
-                print(f"Distancia estimada: {distance:.2f} mm")
-        
-                lat2, lon2, alt2, height = calculate_new_position(lat0, lon0, bearing0, yaw, pitch, distance, altitude0)
-                self.update_marker(lat2, lon2, distance, height)
-        
-                # Dibujar la caja delimitadora y el centro filtrado del dron
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.circle(frame, (self.drone_center_x, self.drone_center_y), 5, (0, 0, 255), -1)
-        
-                # Calcular el error respecto al centro de la imagen para enviar comandos
-                error_x = center_x - self.drone_center_x
-                error_y = center_y - self.drone_center_y
-                threshold = 10  # Umbral en píxeles para emitir un comando
-        
-                if self.tracking:
-                    if error_x > threshold:
-                        self.send_command("right")
-                    elif error_x < -threshold:
-                        self.send_command("left")
-                    if error_y > threshold:
-                        self.send_command("down")
-                    elif error_y < -threshold:
-                        self.send_command("up")
-        
+        if frame_count % frame_skip == 0:
+            frame_tensor = torch.from_numpy(frame).to(device)  # Convertir a tensor y mover a GPU si está disponible
+            results = model(frame_tensor)  # Ejecutar detección en GPU si es posible
+            
+            if results and results[0].boxes:
+                best_box = None
+                best_area = 0
+                # Seleccionar el objeto de mayor área con confianza > 0.8
+                for box in results[0].boxes:
+                    conf = float(box.conf)
+                    if conf < 0.8:
+                        continue
+                    x1, y1, x2, y2 = map(int, box.xyxy[0])
+                    area = (x2 - x1) * (y2 - y1)
+                    if area > best_area:
+                        best_area = area
+                        best_box = (x1, y1, x2, y2)
+                if best_box:
+                    x1, y1, x2, y2 = adjust_bbox(*best_box)
+                    # Calcular el centro detectado actual
+                    detected_center_x = (x1 + x2) // 2
+                    detected_center_y = (y1 + y2) // 2
+            
+                    # Preparar la medición para el filtro de Kalman
+                    measurement = np.array([[np.float32(detected_center_x)],
+                                            [np.float32(detected_center_y)]])
+                    # Inicializar el estado del filtro si es la primera medición
+                    if not self.kalman_initialized:
+                        self.kalman.statePre = np.array([[np.float32(detected_center_x)],
+                                                         [np.float32(detected_center_y)],
+                                                         [0],
+                                                         [0]], np.float32)
+                        self.kalman_initialized = True
+            
+                    # Predicción y corrección del filtro de Kalman
+                    prediction = self.kalman.predict()
+                    corrected = self.kalman.correct(measurement)
+                    self.drone_center_x, self.drone_center_y = int(corrected[0]), int(corrected[1])
+            
+                    bbox_width = x2 - x1
+                    bbox_height = y2 - y1
+                    distance = estimate_distance(bbox_width, bbox_height)
+                    print(f"Distancia estimada: {distance:.2f} mm")
+            
+                    lat2, lon2, alt2, height = calculate_new_position(lat0, lon0, bearing0, yaw, pitch, distance, altitude0)
+                    self.update_marker(lat2, lon2, distance, height)
+            
+                    # Dibujar la caja delimitadora y el centro filtrado del dron
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                    cv2.circle(frame, (self.drone_center_x, self.drone_center_y), 5, (0, 0, 255), -1)
+            
+                    # Calcular el error respecto al centro de la imagen para enviar comandos
+                    error_x = center_x - self.drone_center_x
+                    error_y = center_y - self.drone_center_y
+                    threshold = 10  # Umbral en píxeles para emitir un comando
+            
+                    if self.tracking:
+                        if error_x > threshold:
+                            self.send_command("right")
+                        elif error_x < -threshold:
+                            self.send_command("left")
+                        if error_y > threshold:
+                            self.send_command("down")
+                        elif error_y < -threshold:
+                            self.send_command("up")
+
+        frame_count += 1
         img = Image.fromarray(frame)
         img_ctk = ctk.CTkImage(img, size=(640, 480))
         self.video_label.configure(image=img_ctk, text="")

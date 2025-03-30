@@ -64,7 +64,7 @@ If we wanted to use the Raspberry Pi (from now on RPi) to control the servos, it
 The main part of the project was capturing video and process it. Then, a camera connected to the RPi was necessary. A part from that, we should be able to process the video. Then, this tutorial gave us all the steps to do so. However, as explained in the attached document, we had some troubleshoot when detecting the camera in the RPi which made us take different paths than the ones explained in the tutorial. 
 Moreover, in this part we added some knowledge given by the teachers from [DronsEETAC comunity](https://github.com/dronsEETAC/CameraLink/tree/main/webSocketDemo). It was necessary to send video from the RPi to another computer. The protocol we decided to use was websockets, as it was the one giving lower latency compared with MQTT (The protocol studied during the lessons).
 
-### [2.4 Activity 4: Color based object detection](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+### [2.4 Activity 4: Color based object detection](https://www.linkedin.com/feed/update/urn:li:activity:7312091185659969536)
 We needed to detect the drone. We knew, color-based detection was not going to give us the best results. However, we thought it was interesting, and also to familiarize with OpenCV, to do this tutorial. Also, some code was done to test the different options regarding masks and color detections.
 
 ### [2.5 Activity 5: My little ground station](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)

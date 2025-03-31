@@ -71,3 +71,7 @@ We needed to detect the drone. We knew, color-based detection was not going to g
 A clear idea we had was that we wanted to show everything in a simple ground station. The video should be shown and the gimbal controlled from this ground station. As in this chapter tkinter is used to do the ground station, it was necessary to go through the tutorials in order to know better how to do the ground station. As part of getting used to it, a couple of pyhton codes were done to simulate a basic station in order to control a drone simulated through Mission Planner via MQTT (but as commented in point 2.3, we finally chose to proceed with websockets).
 At the end, custom-tkinter, which gives better designs, was the library used.
 
+To set an end to this Phase 2, it's important to mention that some of the codes done to increase our knowledge of these topics are being uploaded in our [Github](https://github.com/miquelht13/MED-TransversalProject/tree/main). Moreover, in this Github we are briefing all the Phases and activities done, having a direct link to the posts done here in [LinkedIn](https://www.linkedin.com/company/med-transversal-project/?viewAsMember=true), so we can keep it updated. 
+
+Now, it's time to start with Phase 3, and the core of our project to develop!
+

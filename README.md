@@ -73,5 +73,5 @@ At the end, custom-tkinter, which gives better designs, was the library used.
 
 To set an end to this Phase 2, it's important to mention that some of the codes done to increase our knowledge of these topics are being uploaded in our [Github](https://github.com/miquelht13/MED-TransversalProject/tree/main). Moreover, in this Github we are briefing all the Phases and activities done, having a direct link to the posts done here in [LinkedIn](https://www.linkedin.com/company/med-transversal-project/?viewAsMember=true), so we can keep it updated. 
 
-Now, it's time to start with Phase 3, and the core of our project to develop!
+Now, it's time to start with Phase 3, the core of our project!
 

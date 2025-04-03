@@ -82,8 +82,8 @@ Description
 
 ### [3.1 Activity 1: Servo gimbal]
 
-### [3.2 Activity 2: Yolo tests and first codes]
-Hablar tema primer codigo de yolo con deteccion de coches, puede que la primera instancia de la app con websockets con el envio de stream.
+### [3.2 Activity 2: Object detection and first functions]
+Hablar tema primer codigo de yolo con deteccion de coches, puede que la primera instancia de la app con websockets con el envio de stream, calculo de distancia a partir datos de la camara, el objeto y trigonometria (temario Payload).
 
 ### [3.3 Activity 3: Roboflow]
 

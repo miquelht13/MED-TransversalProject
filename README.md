@@ -75,3 +75,15 @@ To set an end to this Phase 2, it's important to mention that some of the codes 
 
 Now, it's time to start with Phase 3, the core of our project!
 
+
+## 3. PHASE 3
+
+Description
+
+### [3.1 Activity 1: Activity 1: Servo gimbal]
+
+### [3.2 Activity 2: Activity 2: Roboflow]
+
+### [3.3 Activity 3: Activity 3: Google Colab]
+
+

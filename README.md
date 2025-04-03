@@ -80,10 +80,10 @@ Now, it's time to start with Phase 3, the core of our project!
 
 Description
 
-### [3.1 Activity 1: Activity 1: Servo gimbal]
+### [3.1 Activity 1: Servo gimbal]
 
-### [3.2 Activity 2: Activity 2: Roboflow]
+### [3.3 Activity 3: Roboflow]
 
-### [3.3 Activity 3: Activity 3: Google Colab]
+### [3.3 Activity 4: Google Colab]
 
 

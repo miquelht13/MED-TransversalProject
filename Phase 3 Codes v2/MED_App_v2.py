@@ -12,6 +12,7 @@ import tkintermapview
 from ultralytics import YOLO
 import math
 
+# Set the interface visuals theme for the app
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
@@ -20,33 +21,34 @@ model = YOLO("drone_s.pt")
 frame_width = 0
 frame_height = 0
 center_x, center_y = 0, 0
-# Datos del drone (medidas en mm)
-DRONE_LENGTH = 250  # Longitud
-DRONE_WIDTH = 250   # Ancho
-DRONE_HEIGHT = 250  # Altura
-DRONE_ASPECT_RATIO = DRONE_LENGTH / DRONE_WIDTH  # Relación de aspecto fija
-# Datos de la cámara
+# Drone measurement data (in mm)
+DRONE_LENGTH = 350  # Length
+DRONE_WIDTH = 350   # Width
+DRONE_HEIGHT = 350  # Height
+DRONE_ASPECT_RATIO = DRONE_LENGTH / DRONE_WIDTH  # Fixed aspect ratio for the drone
+# Camera/sensor data
 SENSOR_WIDTH = 3.68  # mm
 SENSOR_HEIGHT = 2.76  # mm
-PIXEL_WIDTH = 1920 #Debe cuadrar con la resolución del frame de OpenCV
+PIXEL_WIDTH = 1920 # Should match the below settings for OpenCV/Picam2
 PIXEL_HEIGHT = 1080
 FOCAL_LENGTH = 3.04  # mm
 
+# Our initial position for the gimbal (in the app can be set any point)
 lat0, lon0 = 41.276254, 1.988224
-bearing0, yaw, pitch = 40, 1500, 1850
+bearing0, yaw, pitch = 75, 0, 0
 altitude0 = 1
 
 # Earth's radius in meters
 R = 6371000
 
-
+# Function to calculate the new position of the drone (lat,lon and alt) based on the angles moved by the gimbal
 def calculate_new_position(lat0d, lon0d, bearing0d, yawp, pitchp, distance, altitude0):
     # Convert angles to radians
     lat0 = math.radians(lat0d)
     lon0 = math.radians(lon0d)
     bearing0 = math.radians(bearing0d)
-    yawd = 0 * 180/2000 # Añadir estado neutro de los servos y calcular la regla de 3 de steps-grados del servo
-    pitchd = 0 * 180 / 2000
+    yawd = yawp * 90/950
+    pitchd = pitchp * 90 / 950
     yaw = math.radians(yawd)
     pitch = math.radians(pitchd)
     distance = distance/1000
@@ -77,10 +79,10 @@ def calculate_new_position(lat0d, lon0d, bearing0d, yawp, pitchp, distance, alti
     return lat2, lon2, new_altitude, delta_h
 
 
-
+# Function to estimate the distance of the drone based on the side lengths of the generated rectangle
 def estimate_distance(bbox_width, bbox_height):
-    pixel_size_x = SENSOR_WIDTH / PIXEL_WIDTH  # Tamaño de un píxel en mm
-    pixel_size_y = SENSOR_HEIGHT / PIXEL_HEIGHT  # Tamaño de un píxel en mm
+    pixel_size_x = 0.00112  # Tamaño de un píxel en mm
+    pixel_size_y = 0.00112  # Tamaño de un píxel en mm
 
     object_width_pixels = bbox_width
     object_height_pixels = bbox_height
@@ -93,19 +95,19 @@ def estimate_distance(bbox_width, bbox_height):
 
     return (distance_x + distance_y) / 2 # Promedio de ambas estimaciones en mm
 
-# Función para ajustar el bounding box manteniendo la relación de aspecto
+# Function to adjust the bounding box keeping the aspect ratio of the drone
 def adjust_bbox(x1, y1, x2, y2):
     bbox_width = x2 - x1
     bbox_height = y2 - y1
 
     if bbox_width / bbox_height > DRONE_ASPECT_RATIO:
-        # Ajustar la altura para mantener la relación de aspecto
+        # Adjust the height to maintain the desired aspect ratio
         new_height = int(bbox_width / DRONE_ASPECT_RATIO)
         y_center = (y1 + y2) // 2
         y1 = max(0, y_center - new_height // 2)
         y2 = min(frame_height, y_center + new_height // 2)
     else:
-        # Ajustar el ancho para mantener la relación de aspecto
+        # Adjust the width to maintain the desired aspect ratio
         new_width = int(bbox_height * DRONE_ASPECT_RATIO)
         x_center = (x1 + x2) // 2
         x1 = max(0, x_center - new_width // 2)
@@ -113,7 +115,7 @@ def adjust_bbox(x1, y1, x2, y2):
 
     return x1, y1, x2, y2
 
-
+# Setting the app
 class VideoClient(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -183,28 +185,17 @@ class VideoClient(ctk.CTk):
 
         threading.Thread(target=self.run_command_event_loop).start()
 
-        # Introducción de threads para tener el video fluido
+        # Introduction of threads so the Yolo process is kept at the app and not in the video receiving process
         threading.Thread(target=self.yolo_detection).start()
 
+    # Function to start Yolo
     def yolo_detection(self):
         global center_y, center_x
         while self.running_ia:
             if self.frame is not None:
                 self.results = model(self.frame)
-                self.detections = self.results[0]
-                if self.detections:
-                    if self.tracking:
-                        # Mover los servos para centrar el dron
-                        if self.drone_center_x < center_x - 30:  # Mover derecha
-                            self.send_command("left")
-                        elif self.drone_center_x > center_x + 30:
-                            self.send_command("right")
 
-                        if self.drone_center_y < center_y - 30:  # Mover arriba
-                            self.send_command("up")
-                        elif self.drone_center_y > center_y + 30:
-                            self.send_command("down")
-
+    # Functions to start tracking or stop it
     def toggle_tracking(self):
         if not self.tracking:
             # Start tracking
@@ -221,6 +212,7 @@ class VideoClient(ctk.CTk):
     def stop_tracking(self):
         self.tracking = False
 
+    # Functions to start&stop streaming 
     def start_stream(self):
         global center_x, center_y
         self.running = True
@@ -232,10 +224,11 @@ class VideoClient(ctk.CTk):
 
     def stop_stream(self):
         self.running = False
-        self.running_ia = False
+        #self.running_ia = False
         self.start_button.configure(state="normal")
         self.stop_button.configure(state="disabled")
 
+    # Socket functions to receive and send the desired commands
     def run_video_event_loop(self):
         asyncio.set_event_loop(self.video_loop)
         self.video_loop.run_until_complete(self.receive_video())
@@ -245,7 +238,7 @@ class VideoClient(ctk.CTk):
         self.command_loop.run_until_complete(self.connect_command_server())
 
     async def receive_video(self):
-        video_uri = "ws://127.0.0.1:8765" # RasPi IP ws://192.168.1.32:8765
+        video_uri = "ws://192.168.137.220:8765" # RasPi IP ws://192.168.1.32:8765
         try:
             async with websockets.connect(video_uri) as video_websocket:
                 self.video_websocket = video_websocket
@@ -262,7 +255,7 @@ class VideoClient(ctk.CTk):
             print(f"Error receiving video: {e}")
 
     async def connect_command_server(self):
-        command_uri = "ws://127.0.0.1:8766" # RasPi IP ws://192.168.1.32:8766
+        command_uri = "ws://192.168.137.220:8766" # RasPi IP ws://192.168.1.32:8766
         try:
             async with websockets.connect(command_uri) as command_websocket:
                 self.command_websocket = command_websocket
@@ -290,44 +283,66 @@ class VideoClient(ctk.CTk):
         self.distance_label.configure(text=f"Drone at {distance:.2f} meters from sensor")
         self.height_label.configure(text=f"Drone at {height:.2f} meters height")
 
+    # Function to update image over time, drawing the box of the detected object
     def update_image(self, frame):
         global frame_width, frame_height, center_y, center_x, lat0, lon0, bearing0, yaw, pitch, altitude0
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        frame_width = 640
-        frame_height = 480
+        frame_width = 1920
+        frame_height = 1080
         center_x, center_y = frame_width // 2, frame_height // 2
 
-        # Detección de objetos con YOLO 11
-        # results = model(frame)
-        # detections = results[0]  # Obtener las detecciones
-
-        if self.detections and self.detections.boxes:
-            # Seleccionar el coche más grande detectado
-            # largest_car = detections.loc[detections['confidence'].idxmax()]
-            for box in self.detections.boxes:
+        results = self.results
+        if results and results[0].boxes:
+            best_box = None
+            best_area = 0
+            # Seleccionar el objeto de mayor área con confianza > 0.8
+            for box in results[0].boxes:
+                conf = float(box.conf)
+                if conf < 0.8:
+                    continue
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
+                area = (x2 - x1) * (y2 - y1)
+                if area > best_area:
+                    best_area = area
+                    best_box = (x1, y1, x2, y2)
+            if best_box:
+                x1, y1, x2, y2 = adjust_bbox(*best_box)
+                self.drone_center_x, self.drone_center_y = (x1 + x2) // 2, (y1 + y2) // 2
 
-            # Ajustar bounding box para mantener la relación de aspecto fija
-            x1, y1, x2, y2 = adjust_bbox(x1, y1, x2, y2)
-            self.drone_center_x, self.drone_center_y = (x1 + x2) // 2, (y1 + y2) // 2
+                # Computes the estimated distance of the drone frome the sensor
+                bbox_width = x2 - x1
+                bbox_height = y2 - y1
+                distance = estimate_distance(bbox_width, bbox_height)
+                print(f"Distancia estimada: {distance:.2f} mm")
 
-            # Calcular la distancia estimada
-            bbox_width = x2 - x1
-            bbox_height = y2 - y1
-            distance = estimate_distance(bbox_width, bbox_height)
-            print(f"Distancia estimada: {distance:.2f} mm")
 
-            # Sacar coordenadas del dron
-            lat2, lon2, alt2, height = calculate_new_position(lat0, lon0, bearing0, yaw, pitch, distance, altitude0)
-            # Update the marker position on the map and display distance and height
-            self.update_marker(lat2, lon2, distance, height)
+                # Obtain the position of the drone
+                lat2, lon2, alt2, height = calculate_new_position(lat0, lon0, bearing0, yaw, pitch, distance, altitude0)
+                # Update the marker position on the map and display distance and height
+                self.update_marker(lat2, lon2, distance, height)
 
-            # Dibujar la caja delimitadora
-            # f = results[0].plot()
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.circle(frame, (self.drone_center_x, self.drone_center_y), 5, (0, 0, 255), -1)
+                # Draw the bounding box
+                # f = results[0].plot()
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                cv2.circle(frame, (self.drone_center_x, self.drone_center_y), 5, (0, 0, 255), -1)
+
+                if self.tracking:
+                    # Move the servos to track the drone
+                    if self.drone_center_x < center_x - 320:  
+                        self.send_command("t_left")
+                        yaw -= 5
+                    elif self.drone_center_x > center_x + 320:
+                        self.send_command("t_right")
+                        yaw += 5
+
+                    if self.drone_center_y < center_y - 180: 
+                        self.send_command("t_up")
+                        pitch += 5
+                    elif self.drone_center_y > center_y + 180:
+                        self.send_command("t_down")
+                        pitch -=5
 
         img = Image.fromarray(frame)
         #img = img.resize((800, 500))
@@ -340,6 +355,7 @@ class VideoClient(ctk.CTk):
         if self.command_websocket:
             asyncio.run_coroutine_threadsafe(self.command_websocket.send(command), self.command_loop)
 
+    # Function to set a new position for the gimbal by right-clicking the map
     def set_gimbal_position(self, coords):
         global lat0, lon0
         print("Setting gimbal position to:", coords)

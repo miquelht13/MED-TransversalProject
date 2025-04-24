@@ -67,7 +67,7 @@ Moreover, in this part we added some knowledge given by the teachers from [Drons
 ### [2.4 Activity 4: Color based object detection](https://www.linkedin.com/feed/update/urn:li:activity:7312091185659969536)
 We needed to detect the drone. We knew, color-based detection was not going to give us the best results. However, we thought it was interesting, and also to familiarize with OpenCV, to do this tutorial. Also, some code was done to test the different options regarding masks and color detections.
 
-### [2.5 Activity 5: My little ground station](https://www.linkedin.com/feed/update/urn:li:activity:7252793126744952835)
+### [2.5 Activity 5: My little ground station](https://www.linkedin.com/feed/update/urn:li:activity:7321298347904892928)
 A clear idea we had was that we wanted to show everything in a simple ground station. The video should be shown and the gimbal controlled from this ground station. As in this chapter tkinter is used to do the ground station, it was necessary to go through the tutorials in order to know better how to do the ground station. As part of getting used to it, a couple of pyhton codes were done to simulate a basic station in order to control a drone simulated through Mission Planner via MQTT (but as commented in point 2.3, we finally chose to proceed with websockets).
 At the end, custom-tkinter, which gives better designs, was the library used.
 
@@ -78,11 +78,11 @@ Now, it's time to start with Phase 3, the core of our project!
 
 ## 3. PHASE 3
 
-Description
+Phase 3 consists on the development of our idea by using all the knowledge acquired during phases 1 and 2. Our idea was creating a servo gimbal being able to detect drones using YOLO. Once a drone is detected, the gimbal must follow it. Then, by algorithms, we wanted to be able to measure the distance and the altitude from the distance and print the drone position on a map. For this project, we needed all the knowledge learnt during phase 2 mainly.
 
-### [3.1 Activity 1: Servo gimbal]()
-Hacer intro
-Insertar [video]() del servo moviendose con el teclado, haciendo otro post de linkedin.
+### [3.1 Activity 1: Servo gimbal](https://www.linkedin.com/feed/update/urn:li:activity:7321299232697516033)
+In this activity we have built a servo gimbal and we have tested it. We decided to build a 2-axis gimbal and we obtained a design which could be printed with a 3D printer from [Thingiverse](https://www.thingiverse.com/thing:4710301). Once printed, we mounted it and connect all the necessary wires to the Raspberry Pi. Then, we did a simple Python script to test the connections and the movement of the gimbal.
+The video of the test can be seen in [this link](https://www.linkedin.com/feed/update/urn:li:activity:7321302282136969216).
 
 ### [3.2 Activity 2: Object detection and first functions]()
 Hablar tema primer codigo de yolo con deteccion de coches, puede que la primera instancia de la app con websockets con el envio de stream, calculo de distancia a partir datos de la camara, el objeto y trigonometria (temario Payload).

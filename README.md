@@ -80,18 +80,22 @@ Now, it's time to start with Phase 3, the core of our project!
 
 Description
 
-### [3.1 Activity 1: Servo gimbal]
+### [3.1 Activity 1: Servo gimbal]()
+Hacer intro
+Insertar [video]() del servo moviendose con el teclado, haciendo otro post de linkedin.
 
-### [3.2 Activity 2: Object detection and first functions]
+### [3.2 Activity 2: Object detection and first functions]()
 Hablar tema primer codigo de yolo con deteccion de coches, puede que la primera instancia de la app con websockets con el envio de stream, calculo de distancia a partir datos de la camara, el objeto y trigonometria (temario Payload).
 
-### [3.3 Activity 3: Roboflow]
+### [3.3 Activity 3: Roboflow]()
+Hacer intro
 
-### [3.3 Activity 4: Google Colab]
+### [3.3 Activity 4: Google Colab]()
+Hacer intro
 
-### [3.4 Activity 5: Final Integration and Test]
+### [3.4 Activity 5: Final Integration and Test]()
 Hablar de las mejoras de la app, todos los botones nuevos para el servo y el tracking. Hablar de cada función con los problemas detectados y mejoras hechas, etc.
 Mostrar resultado final
-Hacer video capturando la pantalla, y con escenas al dron y el gimbal moviendose
+Hacer [video]() capturando la pantalla, y con escenas al dron y el gimbal moviendose
 
 

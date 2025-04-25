@@ -102,10 +102,14 @@ Codes related:
 - MED_App.py & MED_server.py
 
 ### [3.3 Activity 3: Roboflow]()
-Hacer intro
+In this task, Roboflow was used to prepare a dataset for training a YOLOV11 model aimed at drone detection. A total of 607 images were labeled and augmented to 1,457 to enhance the model's generalization capabilities. The dataset was divided into 88% for training, 8% for validation, and 4% for testing, ensuring an accurate assessment of model performance.
+
 
 ### [3.4 Activity 4: Google Colab]()
-Hacer intro
+In this activity, a YOLOv11 model will be trained to identify drones using a custom dataset prepared with Roboflow. The dataset will undergo preprocessing, and the model will be trained using defined configuration settings. Performance during training will be assessed through various metrics and visualizations. Ultimately, the trained model will be evaluated and applied to detect objects in test images.
+
+Codes related:
+- Training_IA_Code.py
 
 ### [3.5 Activity 5: Final Integration and Test]()
 The final activity of the project involved integrating all components: video streaming, object detection, both manual and automatic gimbal control, distance and altitude estimation, and map plotting. After that, several tests were conducted to identify any issues or potential improvements. Finally, we completed the project by recording a session performed at the [DroneLab](https://agrotech.upc.edu/ca/infraestructures/dronelab), which you can view in [this video](https://www.youtube.com/watch?v=QLIRPMUd2mk&list=PLXmfY9bKHrct41Wz88AIUQgcUmWa9Vt4R&index=1).

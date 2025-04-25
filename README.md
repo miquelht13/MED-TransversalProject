@@ -3,10 +3,10 @@ Documentation summary and codes respository for our Transversal Project from the
 
 See below our path through this project, from building a drone to the development of an UAS application!
 
+MADE BY: [Albert Sanchez Segura](https://www.linkedin.com/in/albert-s%C3%A1nchez-segura/), [Joan Ruiz Galvez](https://www.linkedin.com/in/joan-ruiz-galvez-a8b3521b1/) and [Miquel Huete Tabernero](https://www.linkedin.com/in/miquel-huete-tabernero/)
+
 ## Development of a C-UAS application: Drone Tracking System 
 [insertar GIF de la App] [insertar GIF del servo moviendose]
-
-MADE BY: [Albert Sanchez Segura](https://www.linkedin.com/in/albert-s%C3%A1nchez-segura/), [Joan Ruiz Galvez](https://www.linkedin.com/in/joan-ruiz-galvez-a8b3521b1/) and [Miquel Huete Tabernero](https://www.linkedin.com/in/miquel-huete-tabernero/)
 
 ## 1. PHASE 1
 

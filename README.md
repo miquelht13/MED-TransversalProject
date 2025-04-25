@@ -80,7 +80,7 @@ Now, it's time to start with Phase 3, the core of our project!
 
 Phase 3 consists on the development of our idea by using all the knowledge acquired during phases 1 and 2. Our idea was creating a servo gimbal being able to detect drones using YOLO. Once a drone is detected, the gimbal must follow it. Then, by algorithms, we wanted to be able to measure the distance and the altitude from the distance and print the drone position on a map. For this project, we needed all the knowledge learnt during phase 2 mainly.
 
-All codes for this Phase are inside "Phase 3 Codes" folder and, for the final codes used, inside 2Phase 3 Codes v2"
+All codes for this Phase are inside "Phase 3 Codes" folder and, for the final codes used, inside "Phase 3 Codes v2".
 
 ### [3.1 Activity 1: Servo gimbal](https://www.linkedin.com/feed/update/urn:li:activity:7321299232697516033)
 In this activity we have built a servo gimbal and we have tested it. We decided to build a 2-axis gimbal and we obtained a design which could be printed with a 3D printer from [Thingiverse](https://www.thingiverse.com/thing:4710301). Once printed, we mounted it and connect all the necessary wires to the Raspberry Pi. Then, we did a simple Python script to test the connections and the movement of the gimbal ().

@@ -1,5 +1,6 @@
 # MED - Transversal Project
-Documentation summary and codes respository for our MED - Transversal Project
+Documentation summary and codes respository for our Transversal Project from the [Master's degree in Applications and Technologies for Unmanned Aircraft Systems (Drones)](https://eetac.upc.edu/en/study/masters-degrees/med) program. 
+See below our path working in this project!
 
 ## Development of a C-UAS application: Drone Tracking System 
 [insertar GIF de la App] [insertar GIF del servo moviendose]

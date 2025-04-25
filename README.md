@@ -1,6 +1,9 @@
 # MED - Transversal Project
 Documentation summary and codes respository for our MED - Transversal Project
 
+## Development of a C-UAS application: Drone Tracking System 
+[insertar GIF de la App] [insertar GIF del servo moviendose]
+
 ## 1. PHASE 1
 
 ### [1.1 Activity 1: The Basics of a drone](https://www.linkedin.com/feed/update/urn:li:activity:7252710406031372288)

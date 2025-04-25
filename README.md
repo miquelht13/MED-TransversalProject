@@ -6,6 +6,8 @@ See below our path through this project, from building a drone to the developmen
 ## Development of a C-UAS application: Drone Tracking System 
 [insertar GIF de la App] [insertar GIF del servo moviendose]
 
+MADE BY: [Albert Sanchez Segura](https://www.linkedin.com/in/albert-s%C3%A1nchez-segura/), [Joan Ruiz Galvez](https://www.linkedin.com/in/joan-ruiz-galvez-a8b3521b1/) and [Miquel Huete Tabernero](https://www.linkedin.com/in/miquel-huete-tabernero/)
+
 ## 1. PHASE 1
 
 ### [1.1 Activity 1: The Basics of a drone](https://www.linkedin.com/feed/update/urn:li:activity:7252710406031372288)
@@ -106,7 +108,10 @@ Hacer intro
 Hacer intro
 
 ### [3.4 Activity 5: Final Integration and Test]()
-The final phase of the project involved integrating all components: video streaming, object detection, both manual and automatic gimbal control, distance and altitude estimation, and map plotting. After that, several tests were conducted to identify any issues or potential improvements. Finally, we completed the project by recording a session performed at the [DroneLab](https://agrotech.upc.edu/ca/infraestructures/dronelab), which you can view in [this video](https://www.youtube.com/watch?v=QLIRPMUd2mk&list=PLXmfY9bKHrct41Wz88AIUQgcUmWa9Vt4R&index=1).
+The final activity of the project involved integrating all components: video streaming, object detection, both manual and automatic gimbal control, distance and altitude estimation, and map plotting. After that, several tests were conducted to identify any issues or potential improvements. Finally, we completed the project by recording a session performed at the [DroneLab](https://agrotech.upc.edu/ca/infraestructures/dronelab), which you can view in [this video](https://www.youtube.com/watch?v=QLIRPMUd2mk&list=PLXmfY9bKHrct41Wz88AIUQgcUmWa9Vt4R&index=1).
+
+The codes related are found in "Phase 3 Codes v2":
+- MED_App_v2.py & MED_server_v2.py
 
 With this concludes our project! Hope you find it interesting!
 

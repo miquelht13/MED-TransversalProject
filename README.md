@@ -104,10 +104,10 @@ Codes related:
 ### [3.3 Activity 3: Roboflow]()
 Hacer intro
 
-### [3.3 Activity 4: Google Colab]()
+### [3.4 Activity 4: Google Colab]()
 Hacer intro
 
-### [3.4 Activity 5: Final Integration and Test]()
+### [3.5 Activity 5: Final Integration and Test]()
 The final activity of the project involved integrating all components: video streaming, object detection, both manual and automatic gimbal control, distance and altitude estimation, and map plotting. After that, several tests were conducted to identify any issues or potential improvements. Finally, we completed the project by recording a session performed at the [DroneLab](https://agrotech.upc.edu/ca/infraestructures/dronelab), which you can view in [this video](https://www.youtube.com/watch?v=QLIRPMUd2mk&list=PLXmfY9bKHrct41Wz88AIUQgcUmWa9Vt4R&index=1).
 
 The codes related are found in "Phase 3 Codes v2":

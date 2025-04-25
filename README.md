@@ -84,8 +84,8 @@ Phase 3 consists on the development of our idea by using all the knowledge acqui
 In this activity we have built a servo gimbal and we have tested it. We decided to build a 2-axis gimbal and we obtained a design which could be printed with a 3D printer from [Thingiverse](https://www.thingiverse.com/thing:4710301). Once printed, we mounted it and connect all the necessary wires to the Raspberry Pi. Then, we did a simple Python script to test the connections and the movement of the gimbal.
 The video of the test can be seen in [this link](https://www.linkedin.com/feed/update/urn:li:activity:7321302282136969216).
 
-### [3.2 Activity 2: Object detection and first functions]()
-Hablar tema primer codigo de yolo con deteccion de coches, puede que la primera instancia de la app con websockets con el envio de stream, calculo de distancia a partir datos de la camara, el objeto y trigonometria (temario Payload).
+### [3.2 Activity 2: Object detection and first functions](https://www.linkedin.com/posts/med-transversal-project_phase-3-activity-2-object-detection-first-activity-7321458234664361984-r9jX?utm_source=share&utm_medium=member_desktop&rcm=ACoAADThkxgB1HBctho7Il_AT5GUbmSarMw61_A)
+In the second activity of phase 3 we have mainly developed two codes. One helped us to introduce ourselves to object detection, using Yolo_v5 and a pre-made database to detect cars. The second one is the skeleton of our final application, which will include all the desired functionalities.
 
 ### [3.3 Activity 3: Roboflow]()
 Hacer intro

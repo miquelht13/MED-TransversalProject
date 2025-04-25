@@ -103,8 +103,11 @@ Hacer intro
 Hacer intro
 
 ### [3.4 Activity 5: Final Integration and Test]()
-Hablar de las mejoras de la app, todos los botones nuevos para el servo y el tracking. Hablar de cada función con los problemas detectados y mejoras hechas, etc.
-Mostrar resultado final
-Hacer [video]() capturando la pantalla, y con escenas al dron y el gimbal moviendose
+The final phase of the project involved integrating all components: video streaming, object detection, both manual and automatic gimbal control, distance and altitude estimation, and map plotting. After that, several tests were conducted to identify any issues or potential improvements. Finally, we completed the project by recording a session performed at the [DroneLab](https://agrotech.upc.edu/ca/infraestructures/dronelab), which you can view in [this video](https://www.youtube.com/watch?v=QLIRPMUd2mk&list=PLXmfY9bKHrct41Wz88AIUQgcUmWa9Vt4R&index=1). \n
+
+With this concludes our project! Hope you find it interesting! \n
+
+See you soon!
+
 
 

@@ -5,8 +5,7 @@ See below our path through this project, from building a drone to the developmen
 
 MADE BY: [Albert Sanchez Segura](https://www.linkedin.com/in/albert-s%C3%A1nchez-segura/), [Joan Ruiz Galvez](https://www.linkedin.com/in/joan-ruiz-galvez-a8b3521b1/) and [Miquel Huete Tabernero](https://www.linkedin.com/in/miquel-huete-tabernero/)
 
-## Development of a C-UAS application: Drone Tracking System 
-[insertar GIF de la App] [insertar GIF del servo moviendose]
+# Development of a C-UAS application: Drone Tracking System 
 
 ## 1. PHASE 1
 

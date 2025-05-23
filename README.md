@@ -96,6 +96,8 @@ The video of the test can be seen in [this link](https://www.linkedin.com/feed/u
 ### [3.2 Activity 2: Object detection and first functions](https://www.linkedin.com/posts/med-transversal-project_phase-3-activity-2-object-detection-first-activity-7321458234664361984-r9jX?utm_source=share&utm_medium=member_desktop&rcm=ACoAADThkxgB1HBctho7Il_AT5GUbmSarMw61_A)
 In the second activity of Phase 3 we have mainly developed two codes. One helped us to introduce ourselves to object detection, using Yolo_v5 and a pre-made database to detect cars. The second one is the skeleton of our final application, which will include all the desired functionalities.
 
+As a first idea, we wanted the object detection process to be carried out on the Raspberry Pi. Due to the poor performance of it when performing the Yolo processes, we had to migrate that process to the main computer, running it in conjunction with the web app.
+
 Codes related:
 - ObjectDetection_Test.py
 - MED_App.py & MED_server.py
